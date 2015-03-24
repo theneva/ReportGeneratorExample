@@ -1,30 +1,41 @@
-var ceres = new Asteroid('oaaas.meteor.com');
+var asteroid = new Asteroid('oaaas.meteor.com');
 
-ceres.on('connected', function () {
-    console.log('ceres connected');
+asteroid.on('connected', function () {
+    console.log('asteroid connected');
 });
 
-ceres.subscribe('getIntegrationDataForDDP', 'HNcHW7wRKiw6MBEvE');
+asteroid.subscribe('getIntegrationDataForDDP', 'HNcHW7wRKiw6MBEvE');
 
-var lightCollection = ceres.getCollection('IntegrationData');
+var lightCollection = asteroid.getCollection('IntegrationData');
 
 var reactiveQuery = lightCollection.reactiveQuery({});
 
+var seriesIndex = 0;
+
+var keys = [];
+
 reactiveQuery.on('change', function (changedItemId) {
-    console.log(changedItemId);
+    seriesIndex = 0;
+    keys = [];
+
     var lightData = lightCollection._set._items[changedItemId];
 
-    console.log(lightData);
+    var fieldKeys = [];
 
-    var data = [
-        lightData.data['12'],
-        lightData.data['13'],
-        lightData.data['14'],
-        lightData.data['15'],
-        lightData.data['16'],
-        lightData.data['17'],
-        lightData.data['18']
-    ];
+    for (var fieldKey in lightData.data) {
+        fieldKeys.push(fieldKey);
+    }
+
+    fieldKeys.sort();
+
+    var data = [];
+
+    for (var i = 0; i < fieldKeys.length; i++) {
+        var key = fieldKeys[i];
+
+        data.push(lightData.data[key]);
+        keys.push(key + ':00 - ' + key + ':59');
+    }
 
     addLineChart(data);
 });
@@ -82,28 +93,6 @@ function addLineChart(rawDataSeries) {
         return chart;
     });
 
-    var seriesIndex = 0;
-
-    var keys = [
-        '12:00 - 12:59',
-        '13:00 - 13:59',
-        '14:00 - 14:59',
-        '15:00 - 15:59',
-        '16:00 - 16:59',
-        '17:00 - 17:59',
-        '18:00 - 18:59'
-    ];
-
-    var colors = [
-        '#00ffff',
-        '#ff00ff',
-        '#00ff00',
-        '#ffff00',
-        '#0000ff',
-        '#000000',
-        '#ff0000'
-    ];
-
     function convertToD3Series(coordinateSeries) {
         var series = [];
 
@@ -112,8 +101,7 @@ function addLineChart(rawDataSeries) {
 
             series.push({
                 values: singleSeries,
-                key: '' + keys[seriesIndex],
-                color: colors[seriesIndex]
+                key: keys[seriesIndex]
             });
 
             seriesIndex++;
