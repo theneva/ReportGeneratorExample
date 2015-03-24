@@ -1,23 +1,20 @@
 <!doctype html>
-<html lang="en" ng-app="reportGenerator">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <link rel="node_modules/bootstrap/dist/css/bootstrap.css"/>
     <link rel="stylesheet" href="node_modules/nvd3/nv.d3.css"/>
     <title>Document</title>
 </head>
-<body ng-controller="GraphController">
-
-{{message}}
+<body>
 
 <div id="chart">
-    <svg style="height:500px;" class="nv-chart-99907"></svg>
+    <svg style="height:98vh;" class="nv-chart-99907"></svg>
 </div>
 
 <script src="node_modules/jquery/dist/jquery.js"></script>
 <script src="node_modules/d3/d3.js"></script>
 <script src="node_modules/nvd3/nv.d3.js"></script>
-<script src="node_modules/angular/angular.js"></script>
-<script src="js/controllers.js"></script>
+<script src="js/chart.js"></script>
 </body>
 </html>
