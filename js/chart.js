@@ -4,7 +4,7 @@ ceres.on('connected', function () {
     console.log('ceres connected');
 });
 
-ceres.subscribe('getIntegrationDataForDDP', 'vauXJk88tqh4defLS');
+ceres.subscribe('getIntegrationDataForDDP', 'HNcHW7wRKiw6MBEvE');
 
 var lightCollection = ceres.getCollection('IntegrationData');
 
