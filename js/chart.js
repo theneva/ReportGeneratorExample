@@ -1,10 +1,29 @@
-$.get('http://oaaas.meteor.com/api/sensordata/HNcHW7wRKiw6MBEvE', function (lightData) {
+var ceres = new Asteroid('oaaas.meteor.com');
+
+ceres.on('connected', function () {
+    console.log('ceres connected');
+});
+
+ceres.subscribe('getIntegrationDataForDDP', 'HNcHW7wRKiw6MBEvE');
+
+var lightCollection = ceres.getCollection('IntegrationData');
+
+var reactiveQuery = lightCollection.reactiveQuery({});
+
+reactiveQuery.on('change', function (changedItemId) {
+    console.log(changedItemId);
+    var lightData = lightCollection._set._items[changedItemId];
+
+    console.log(lightData);
+
     var data = [
         lightData.data['12'],
         lightData.data['13'],
         lightData.data['14'],
         lightData.data['15'],
-        lightData.data['16']
+        lightData.data['16'],
+        lightData.data['17'],
+        lightData.data['18']
     ];
 
     addLineChart(data);
@@ -70,7 +89,9 @@ function addLineChart(rawDataSeries) {
         '13:00 - 13:59',
         '14:00 - 14:59',
         '15:00 - 15:59',
-        '16:00 - 16:59'
+        '16:00 - 16:59',
+        '17:00 - 17:59',
+        '18:00 - 18:59'
     ];
 
     var colors = [
@@ -78,7 +99,9 @@ function addLineChart(rawDataSeries) {
         '#ff00ff',
         '#00ff00',
         '#ffff00',
-        '#0000ff'
+        '#0000ff',
+        '#000000',
+        '#ff0000'
     ];
 
     function convertToD3Series(coordinateSeries) {
@@ -99,3 +122,4 @@ function addLineChart(rawDataSeries) {
         return series;
     }
 }
+/**/
