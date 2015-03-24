@@ -78,7 +78,12 @@ app.service('GraphService', function ($http) {
             return chart;
         });
 
-        var key = 0;
+        var seriesIndex = 0;
+
+        var keys = [
+            '13:00 - 13:59',
+            '14:00 - 14:59'
+        ];
 
         var colors = [
             '#ff00ff',
@@ -93,11 +98,11 @@ app.service('GraphService', function ($http) {
 
                 series.push({
                     values: singleSeries,
-                    key: '' + key,
-                    color: colors[key]
+                    key: '' + keys[seriesIndex],
+                    color: colors[seriesIndex]
                 });
 
-                key++;
+                seriesIndex++;
             }
 
             return series;
